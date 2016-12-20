@@ -1,5 +1,6 @@
 package karan.socialcopstask;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -7,18 +8,21 @@ import java.util.ArrayList;
  */
 public class CommonBytes {
     ArrayList<byte[]> buffer=new ArrayList<>();
-    public void read(byte[] bytes)
+    byte temp[];
+    public void write(byte[] bytes,int bytesRead)
     {
         synchronized (this)
         {
-            buffer.add(bytes);
+            temp=new byte[bytesRead];
+            System.arraycopy(bytes,0,temp,0,bytesRead);
+            buffer.add(temp);
             notify();
         }
     }
-    public byte[] write() throws InterruptedException {
+    public byte[] read() throws InterruptedException {
             synchronized (this) {
                 while (buffer.size() == 0)
-                    wait();
+                    return null;
 
                 byte[] bytes = buffer.get(0);
                 buffer.remove(0);

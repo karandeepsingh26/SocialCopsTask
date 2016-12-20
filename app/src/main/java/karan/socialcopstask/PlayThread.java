@@ -64,18 +64,18 @@ class PlayThreadService extends Thread{
             Log.d("connection","established");
             InputStream inputStream=socket.getInputStream();
             OutputStream outputStream=socket.getOutputStream();
-            commonBytes.read(incomingBytes);
-
            while (incomingBytes.length!=0)
            {
-               outputStream.write(incomingBytes);
-               commonBytes.read(incomingBytes);
+               incomingBytes=commonBytes.read();
+//               outputStream.write(incomingBytes);
 
            }
 
             inputStream.close();
 
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
